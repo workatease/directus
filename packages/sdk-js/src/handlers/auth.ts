@@ -130,6 +130,12 @@ export class AuthHandler {
 			data.refresh_token = await this.storage.getItem('directus_refresh_token');
 		}
 		await this.axios.post('/auth/logout', data);
+
+		await this.storage.removeItem('directus_access_token');
+		await this.storage.removeItem('directus_access_token_expires');
+		if (this.mode === 'json') {
+			await this.storage.removeItem('directus_refresh_token');
+		}
 		this.token = null;
 	}
 
